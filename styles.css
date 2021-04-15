@@ -1,0 +1,64 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+input[type="file"] {
+	width: 115px;
+	color: transparent;
+}
+
+header,
+section,
+aside {
+	padding: 20px;
+}
+
+/* CABEÇALHO*/
+body > header {
+	display: flex;
+	align-items: center;
+
+	background-color: black;
+}
+body > header > span {
+	color: white;
+	margin-right: 20px;
+}
+body > header > div#rgb-color-picker {
+	margin-right: 30px;
+
+	width: 40px;
+	height: 40px;
+	background-color: white;
+}
+
+/* CENTRO */
+main > section {
+	flex: 1;
+}
+
+/* BARRRA LATERAL */
+main > aside {
+	display: flex;
+	flex-direction: column;
+
+	overflow: hidden;
+
+	min-width: 200px;
+	background-color: blueviolet;
+}
+
+aside header {
+	justify-content: center;
+	align-items: center;
+}
+
+main {
+	min-height: 100vh;
+	display: flex;
+}
+
+main canvas {
+	flex: 1;
+}
