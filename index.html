@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- <meta http-equiv="refresh" content="3"> -->
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,22 +23,54 @@
     <main>
         <aside>
 						<header>
-							<input id="image" type="file" accept="image/*"/>
+							<label for="image1">
+								Imagem 1:
+							</label>
+							<input id="image1" type="file" accept="image/*"/>
+
+							<label for="image2">
+								Imagem 2:
+							</label>
+							<input id="image2" type="file" accept="image/*" />
 						</header>
 
             <li>
-                <button id="grayscale">Escala de cinza</button>
+							<h1>TONS DE CINZA</h1>
+							<div>
+								<label for="r%">R%:</label>
+								<input value="0" id="r%" type="text" />
+								
+								<label for="g%">G%:</label>
+								<input value="0" id="g%" type="text" />
+								
+								<label for="b%">B%:</label>
+								<input value="0" id="b%" type="text" />
+
+								<label for="grayscale-type">
+									<input id="grayscale-type" type="checkbox" />
+									Média ponderada
+								</label>
+								
+								<button class="button" id="grayscale">Escala de cinza</button>
+							</div>
             </li>
-            <li>
+            <!-- <li>
                 TESTE2
             </li>
             <li>
                 TESTE3
-            </li>
+            </li> -->
         </aside>
     
         <section>
-            <canvas id="frame"></canvas>
+					<div class="canvas-box">
+            <canvas id="frame1"></canvas>
+					</div>
+
+					<div class="canvas-box">
+						<canvas id="frame3"></canvas>
+					</div>
+						<!-- <canvas id="frame3"></canvas> -->
         </section>
     </main>
     

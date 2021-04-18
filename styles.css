@@ -1,6 +1,10 @@
-* {
+*,
+main > aside {
 	padding: 0;
 	margin: 0;
+	color: white;
+
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 input[type="file"] {
@@ -8,10 +12,24 @@ input[type="file"] {
 	color: transparent;
 }
 
+input {
+	color: black;
+}
+
 header,
 section,
 aside {
 	padding: 20px;
+}
+
+li {
+	list-style: none;
+}
+
+label {
+	margin-top: 10px;
+	font-size: 13px;
+	display: block;
 }
 
 /* CABEÇALHO*/
@@ -35,6 +53,14 @@ body > header > div#rgb-color-picker {
 
 /* CENTRO */
 main > section {
+	display: flex;
+	flex: 1;
+}
+main {
+	min-height: 100vh;
+	display: flex;
+}
+main > section > canvas {
 	flex: 1;
 }
 
@@ -48,17 +74,45 @@ main > aside {
 	min-width: 200px;
 	background-color: blueviolet;
 }
-
-aside header {
+main > aside > header {
 	justify-content: center;
 	align-items: center;
 }
 
-main {
-	min-height: 100vh;
-	display: flex;
+/* ITEMS MENU LATERAL */
+main > aside > li {
+	padding: 20px;
+	background-color: black;
 }
 
-main canvas {
-	flex: 1;
+main > aside > li > h1 {
+	margin-bottom: 30px;
+}
+
+main > aside > li > div {
+}
+
+/* CLASSES */
+.button {
+	width: 100%;
+	display: block;
+
+	margin-top: 20px;
+	padding: 8px 10px;
+
+	border: none;
+	border-radius: 5px;
+
+	color: black;
+	background-color: white;
+
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.canvas-box {
+	width: 500px;
+	height: 700px;
+
+	overflow: scroll;
 }
