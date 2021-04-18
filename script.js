@@ -4,13 +4,13 @@ const ctxResult = canvasResult.getContext('2d');
 const canvas1 = document.getElementById("frame1");
 const ctx1 = canvas1.getContext('2d');
 
-window.onload = () => {
-	document.getElementById('grayscale').onclick = grayscale;
-	document.getElementById('image1').onchange = onUpdateImage;
+document.getElementById('grayscale').onclick = grayscale;
+document.getElementById('negative').onclick = negative;
+document.getElementById('image1').onchange = onUpdateImage;
 
-	canvas1.onmousemove = mousePicker;
-	canvasResult.onmousemove = mousePicker;
-}
+canvas1.onmousemove = mousePicker;
+canvasResult.onmousemove = mousePicker;
+
 
 function mousePicker(event){
 	const x = event.layerX;
@@ -67,14 +67,15 @@ function drawImage(url) {
 /* PDI */
 function grayscale(){
 	const isWeightedAverage = document.getElementById('grayscale-type').checked;
-	const redPercent = Number(document.getElementById('r%').value);
-	const greenPercent = Number(document.getElementById('g%').value);
-	const bluePercent = Number(document.getElementById('b%').value);
 
 	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
 	const data = imageData.data;
 
 	if(isWeightedAverage){
+		const redPercent = Number(document.getElementById('r%').value);
+		const greenPercent = Number(document.getElementById('g%').value);
+		const bluePercent = Number(document.getElementById('b%').value);
+
 		if(redPercent + greenPercent + bluePercent !== 100){
 			alert('A soma das porcentagens deve ser igual à 100!');
 			return;
@@ -99,6 +100,20 @@ function grayscale(){
 
 	canvasResult.width = canvas1.width;
 	canvasResult.height = canvas1.height;
+	ctxResult.putImageData(imageData, 0, 0);
+}
 
+function negative(){
+	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+	const data = imageData.data;
+
+	for (let i = 0; i < data.length; i += 4) {
+		data[i]     = 255 - data[i];     // red
+		data[i + 1] = 255 - data[i + 1]; // green
+		data[i + 2] = 255 - data[i + 2]; // blue
+	}
+
+	canvasResult.width = canvas1.width;
+	canvasResult.height = canvas1.height;
 	ctxResult.putImageData(imageData, 0, 0);
 }
