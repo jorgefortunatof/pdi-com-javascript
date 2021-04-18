@@ -9,13 +9,14 @@ window.onload = () => {
 	document.getElementById('image1').onchange = onUpdateImage;
 
 	canvas1.onmousemove = mousePicker;
+	canvasResult.onmousemove = mousePicker;
 }
 
 function mousePicker(event){
 	const x = event.layerX;
   const y = event.layerY;
 
-	const pixel = ctx1.getImageData(x, y, 1, 1);
+	const pixel = event.target.getContext('2d').getImageData(x, y, 1, 1);
 	const data = pixel.data;
 
 	const pixelR = data[0]
