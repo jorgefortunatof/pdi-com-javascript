@@ -7,6 +7,7 @@ const ctx1 = canvas1.getContext('2d');
 document.getElementById('grayscale').onclick = grayscale;
 document.getElementById('negative').onclick = negative;
 document.getElementById('thresholding').onclick = thresholding;
+document.getElementById('noise-reduction').onclick = noiseReduction;
 
 document.getElementById('thresholding-level').oninput = updateThresholdingLevelSpan;
 document.getElementById('image1').onchange = onUpdateImage;
@@ -150,5 +151,59 @@ function thresholding(){
 
 	canvasResult.width = canvas1.width;
 	canvasResult.height = canvas1.height;
+	ctxResult.putImageData(imageData, 0, 0);
+}
+
+function noiseReduction(){
+	const elements = document.getElementsByName('noise-reduction-type');
+	const median = document.getElementById('noise-reduction-use-median').checked;
+	
+	let type;
+	for(element of elements){
+		if(element.checked){
+			type = element.value;
+		}
+	}
+
+	if(!type){
+		alert('Selecione um tipo de remoção de ruído!');
+		return;
+	}
+
+	if(type === "1"){
+		noiseReductionX()
+	}
+}
+
+function noiseReductionX(){
+	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+	const { data, width, height } = imageData;
+
+	const w  = width;
+	const n = w*4;
+
+	const first = 4 + n;
+	const last = data.length - 4 - n;
+
+	for (let i = first; i < last; i += 4) {
+		if(!(i % n == 0 || i % n == n - 4)){
+			let topLeft = i - n - 4;
+			let topRight = i - n + 4;
+			let bottomLeft  = i + n - 4;
+			let bottomRight = i + n + 4;
+
+			const averageRed = (data[i] + data[topLeft] + data[topRight] + data[bottomLeft] + data[bottomRight])/5;
+			const averageGreen = (data[i] + data[topLeft + 1] + data[topRight + 1] + data[bottomLeft + 1] + data[bottomRight + 1])/5;
+			const averageBlue = (data[i] + data[topLeft + 2] + data[topRight + 2] + data[bottomLeft + 2] + data[bottomRight + 2])/5;
+
+			data[i]     = averageRed;    // red
+			data[i + 1] = averageGreen;  // green
+			data[i + 2] = averageBlue;   // blue
+		}
+	}
+
+	canvasResult.width = width;
+	canvasResult.height = height;
+	
 	ctxResult.putImageData(imageData, 0, 0);
 }

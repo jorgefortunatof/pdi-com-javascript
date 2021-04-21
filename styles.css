@@ -8,6 +8,12 @@ main > aside {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+header,
+section,
+aside {
+	padding: 20px;
+}
+
 input[type="file"] {
 	width: 115px;
 	color: transparent;
@@ -15,12 +21,6 @@ input[type="file"] {
 
 input {
 	color: black;
-}
-
-header,
-section,
-aside {
-	padding: 20px;
 }
 
 li {
@@ -35,6 +35,10 @@ label {
 	margin-top: 10px;
 	font-size: 13px;
 	display: block;
+}
+
+hr {
+	margin: 10px 0;
 }
 
 /* CABEÇALHO*/
@@ -91,7 +95,7 @@ main > aside > li {
 }
 
 main > aside > li > h1 {
-	margin-bottom: 30px;
+	margin-bottom: 24px;
 }
 
 main > aside > li > div {
