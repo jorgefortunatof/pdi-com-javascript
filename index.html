@@ -58,7 +58,24 @@
 						<li>
 							<h1>NEGATIVA</h1>
 							<div>
-								<button class="button" id="negative">Negativa</button>
+								<button class="button" id="negative">Negativar</button>
+							</div>
+						</li>
+
+						<li>
+							<h1>LIMIARIZAÇÃO</h1>
+							<div>
+								
+							<label for="thresholding-level">
+								<input id="thresholding-level" type="range" min="0" max="255" step="1" />
+								<span id="thresholding-level-span">0</span>
+							</label>
+								
+								<label for="thresholding-use-grayscale">
+									<input id="thresholding-use-grayscale" type="checkbox" />
+									Escala de cinza
+								</label>
+								<button class="button" id="thresholding">Limiarizar</button>
 							</div>
 						</li>
         </aside>

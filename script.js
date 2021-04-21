@@ -6,27 +6,16 @@ const ctx1 = canvas1.getContext('2d');
 
 document.getElementById('grayscale').onclick = grayscale;
 document.getElementById('negative').onclick = negative;
+document.getElementById('thresholding').onclick = thresholding;
+
+document.getElementById('thresholding-level').oninput = updateThresholdingLevelSpan;
 document.getElementById('image1').onchange = onUpdateImage;
 
 canvas1.onmousemove = mousePicker;
 canvasResult.onmousemove = mousePicker;
 
 
-function mousePicker(event){
-	const x = event.layerX;
-  const y = event.layerY;
-
-	const pixel = event.target.getContext('2d').getImageData(x, y, 1, 1);
-	const data = pixel.data;
-
-	const pixelR = data[0]
-	const pixelG = data[1]
-	const pixelB = data[2]
-	const pixelOpacity = data[3] / 255
-
-	setPickerRGB(pixelR, pixelG, pixelB, pixelOpacity)
-}
-
+/* UTILS */
 function onUpdateImage(event){
 	const file = event.target.files[0];
 	const url = URL.createObjectURL(file);
@@ -34,8 +23,6 @@ function onUpdateImage(event){
 	drawImage(url);
 }
 
-
-/* UTILS */
 function setPickerRGB(r, g, b, opacity){
 	const currentColor = document.getElementById('rgb-color-picker');
 	const spanR = document.getElementById("r").querySelector('span');
@@ -63,8 +50,27 @@ function drawImage(url) {
 	image.src = url;	
 }
 
+function updateThresholdingLevelSpan(event){
+	document.getElementById('thresholding-level-span').innerText = event.target.value
+}
+
 
 /* PDI */
+function mousePicker(event){
+	const x = event.layerX;
+  const y = event.layerY;
+
+	const pixel = event.target.getContext('2d').getImageData(x, y, 1, 1);
+	const data = pixel.data;
+
+	const pixelR = data[0]
+	const pixelG = data[1]
+	const pixelB = data[2]
+	const pixelOpacity = data[3] / 255
+
+	setPickerRGB(pixelR, pixelG, pixelB, pixelOpacity)
+}
+
 function grayscale(){
 	const isWeightedAverage = document.getElementById('grayscale-type').checked;
 
@@ -111,6 +117,35 @@ function negative(){
 		data[i]     = 255 - data[i];     // red
 		data[i + 1] = 255 - data[i + 1]; // green
 		data[i + 2] = 255 - data[i + 2]; // blue
+	}
+
+	canvasResult.width = canvas1.width;
+	canvasResult.height = canvas1.height;
+	ctxResult.putImageData(imageData, 0, 0);
+}
+
+function thresholding(){
+	const thresholdingLevel = document.getElementById('thresholding-level').value;
+	const useGrayscale = document.getElementById('thresholding-use-grayscale').checked;
+
+	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+	const data = imageData.data;
+
+	if(useGrayscale){
+		for (let i = 0; i < data.length; i += 4) {
+			const averageColor = (data[i] + data[i + 1] + data[i + 2])/3;
+
+			data[i]     = averageColor > thresholdingLevel ? 255 : 0;    // red
+			data[i + 1] = averageColor > thresholdingLevel ? 255 : 0;    // green
+			data[i + 2] = averageColor > thresholdingLevel ? 255 : 0;    // blue
+		}
+
+	}else{
+		for (let i = 0; i < data.length; i += 4) {
+			data[i]     = data[i] > thresholdingLevel ? 255 : 0;        // red
+			data[i + 1] = data[i + 1] > thresholdingLevel ? 255 : 0;    // green
+			data[i + 2] = data[i + 2] > thresholdingLevel ? 255 : 0;    // blue
+		}
 	}
 
 	canvasResult.width = canvas1.width;
