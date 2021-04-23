@@ -95,10 +95,16 @@ main > aside > li {
 }
 
 main > aside > li > h1 {
-	margin-bottom: 24px;
+	display: flex;
+	justify-content: space-between;
+
+	font-size: 20px;
+	margin: 20px;
 }
 
-main > aside > li > div {
+main > aside > li > h1 > span {
+	margin-left: 10px;
+	cursor: pointer;
 }
 
 /* CLASSES */

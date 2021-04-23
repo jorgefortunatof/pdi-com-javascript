@@ -5,7 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./styles.css" />
-
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
 		<title>PDI Com JS</title>
 	</head>
 
@@ -29,8 +32,13 @@
 					<input id="image2" type="file" accept="image/*" />
 				</header>
 
-				<li>
-					<h1>TONS DE CINZA</h1>
+				<li id="greyscale-item">
+					<h1>
+						TONS DE CINZA
+						<span class="material-icons on">expand_more</span>
+						<span class="material-icons off"> expand_less </span>
+					</h1>
+
 					<div>
 						<label for="r%">R%:</label>
 						<input value="0" id="r%" type="text" />
@@ -50,15 +58,23 @@
 					</div>
 				</li>
 
-				<li>
-					<h1>NEGATIVA</h1>
+				<li id="negative-item">
+					<h1>
+						NEGATIVA
+						<span class="material-icons on">expand_more</span>
+						<span class="material-icons off"> expand_less </span>
+					</h1>
 					<div>
 						<button class="button" id="negative">Negativar</button>
 					</div>
 				</li>
 
-				<li>
-					<h1>LIMIARIZAÇÃO</h1>
+				<li id="thresholding-item">
+					<h1>
+						LIMIARIZAÇÃO
+						<span class="material-icons on">expand_more</span>
+						<span class="material-icons off"> expand_less </span>
+					</h1>
 					<div>
 						<label for="thresholding-level">
 							<input
@@ -79,8 +95,12 @@
 					</div>
 				</li>
 
-				<li>
-					<h1>REDUÇÃO DE RUÍDOS</h1>
+				<li id="noise-reduction-item">
+					<h1>
+						REDUÇÃO DE RUÍDOS
+						<span class="material-icons on">expand_more</span>
+						<span class="material-icons off"> expand_less </span>
+					</h1>
 					<div>
 						<label for="neighbor-x">
 							<input
@@ -136,6 +156,7 @@
 			</section>
 		</main>
 
-		<script src="./script.js"></script>
+		<script src="./pdi.js"></script>
+		<script src="./interface.js"></script>
 	</body>
 </html>
