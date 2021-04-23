@@ -55,6 +55,22 @@ function updateThresholdingLevelSpan(event){
 	document.getElementById('thresholding-level-span').innerText = event.target.value
 }
 
+function median(numbers){
+	const { length } = numbers;
+
+	const middleIndex = parseInt(length/2);
+	const numbersSorted = numbers.sort((n1, n2) => n1 - n2);
+
+	if(length % 2 === 0){
+		const n1 = numbersSorted[middleIndex];
+		const n2 = numbersSorted[middleIndex - 1];
+		
+		return (n1 + n2)/2;
+	}else{
+		return numbersSorted[middleIndex];
+	}
+}
+
 
 /* PDI */
 function mousePicker(event){
@@ -156,7 +172,7 @@ function thresholding(){
 
 function noiseReduction(){
 	const elements = document.getElementsByName('noise-reduction-type');
-	const median = document.getElementById('noise-reduction-use-median').checked;
+	const useMedian = document.getElementById('noise-reduction-use-median').checked;
 	
 	let type;
 	for(element of elements){
@@ -171,11 +187,15 @@ function noiseReduction(){
 	}
 
 	if(type === "1"){
-		noiseReductionX()
+		noiseReductionX(useMedian);
+	}else if (type === "2"){
+		noiseReductionCross(useMedian);
+	}else{
+		noiseReduction3x3(useMedian);
 	}
 }
 
-function noiseReductionX(){
+function noiseReductionX(useMedian){
 	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
 	const { data, width, height } = imageData;
 
@@ -185,20 +205,175 @@ function noiseReductionX(){
 	const first = 4 + n;
 	const last = data.length - 4 - n;
 
-	for (let i = first; i < last; i += 4) {
-		if(!(i % n == 0 || i % n == n - 4)){
-			let topLeft = i - n - 4;
-			let topRight = i - n + 4;
-			let bottomLeft  = i + n - 4;
-			let bottomRight = i + n + 4;
+	if(useMedian){
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let topLeft = i - n - 4;
+				let topRight = i - n + 4;
+				let bottomLeft  = i + n - 4;
+				let bottomRight = i + n + 4;
+	
+				const medianRed = median([data[i], data[topLeft], data[topRight], data[bottomLeft], data[bottomRight]]);
+				const medianGreen = median([data[i + 1], data[topLeft + 1], data[topRight + 1], data[bottomLeft + 1], data[bottomRight + 1]]);
+				const medianBlue = median([data[i + 2], data[topLeft + 2], data[topRight + 2], data[bottomLeft + 2], data[bottomRight + 2]]);
 
-			const averageRed = (data[i] + data[topLeft] + data[topRight] + data[bottomLeft] + data[bottomRight])/5;
-			const averageGreen = (data[i] + data[topLeft + 1] + data[topRight + 1] + data[bottomLeft + 1] + data[bottomRight + 1])/5;
-			const averageBlue = (data[i] + data[topLeft + 2] + data[topRight + 2] + data[bottomLeft + 2] + data[bottomRight + 2])/5;
+				data[i]     = medianRed;     // red
+				data[i + 1] = medianGreen;   // green
+				data[i + 2] = medianBlue;    // blue
+			}
+		}
 
-			data[i]     = averageRed;    // red
-			data[i + 1] = averageGreen;  // green
-			data[i + 2] = averageBlue;   // blue
+	}else{
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let topLeft = i - n - 4;
+				let topRight = i - n + 4;
+				let bottomLeft  = i + n - 4;
+				let bottomRight = i + n + 4;
+	
+				const averageRed = (data[i] + data[topLeft] + data[topRight] + data[bottomLeft] + data[bottomRight])/5;
+				const averageGreen = (data[i] + data[topLeft + 1] + data[topRight + 1] + data[bottomLeft + 1] + data[bottomRight + 1])/5;
+				const averageBlue = (data[i] + data[topLeft + 2] + data[topRight + 2] + data[bottomLeft + 2] + data[bottomRight + 2])/5;
+	
+				data[i]     = averageRed;     // red
+				data[i + 1] = averageGreen;   // green
+				data[i + 2] = averageBlue;    // blue
+			}
+		}
+
+	}
+
+	canvasResult.width = width;
+	canvasResult.height = height;
+	
+	ctxResult.putImageData(imageData, 0, 0);
+}
+
+function noiseReductionCross(useMedian){
+	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+	const { data, width, height } = imageData;
+
+	const w  = width;
+	const n = w*4;
+
+	const first = 4 + n;
+	const last = data.length - 4 - n;
+
+	if(useMedian){
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let top = i - n;
+				let bottom = i + n;
+				let left  = i - 4;
+				let right = i + 4;
+	
+				const medianRed = median([data[i], data[top], data[bottom], data[left], data[right]]);
+				const medianGreen = median([data[i + 1], data[top + 1], data[bottom + 1], data[left + 1], data[right + 1]]);
+				const medianBlue = median([data[i + 2], data[top + 2], data[bottom + 2], data[left + 2], data[right + 2]]);
+
+				data[i]     = medianRed;     // red
+				data[i + 1] = medianGreen;   // green
+				data[i + 2] = medianBlue;    // blue
+			}
+		}
+
+	}else{
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let top = i - n;
+				let bottom = i + n;
+				let left  = i - 4;
+				let right = i + 4;
+	
+				const averageRed = (data[i] + data[top] + data[bottom] + data[left] + data[right])/5;
+				const averageGreen = (data[i] + data[top + 1] + data[bottom + 1] + data[left + 1] + data[right + 1])/5;
+				const averageBlue = (data[i] + data[top + 2] + data[bottom + 2] + data[left + 2] + data[right + 2])/5;
+	
+				data[i]     = averageRed;     // red
+				data[i + 1] = averageGreen;   // green
+				data[i + 2] = averageBlue;    // blue
+			}
+		}
+	}
+
+	canvasResult.width = width;
+	canvasResult.height = height;
+	
+	ctxResult.putImageData(imageData, 0, 0);
+}
+
+function noiseReduction3x3(useMedian){
+	const imageData = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+	const { data, width, height } = imageData;
+
+	const w  = width;
+	const n = w*4;
+
+	const first = 4 + n;
+	const last = data.length - 4 - n;
+
+	if(useMedian){
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let top = i - n;
+				let bottom = i + n;
+				let left  = i - 4;
+				let right = i + 4;
+				let topLeft = i - n - 4;
+				let topRight = i - n + 4;
+				let bottomLeft  = i + n - 4;
+				let bottomRight = i + n + 4;
+	
+				const medianRed = median([
+					data[i], data[top], data[bottom], data[left], data[right], 
+					data[topLeft], data[topRight], data[bottomLeft], data[bottomRight]
+				]);
+				const medianGreen = median([
+					data[i + 1], data[top + 1], data[bottom + 1], data[left + 1], data[right + 1],
+					data[topLeft + 1], data[topRight + 1], data[bottomLeft + 1], data[bottomRight + 1]
+				]);
+				const medianBlue = median([
+					data[i + 2], data[top + 2], data[bottom + 2], data[left + 2], data[right + 2],
+					data[topLeft + 2], data[topRight + 2], data[bottomLeft + 2], data[bottomRight + 2]
+				]);
+
+				data[i]     = medianRed;     // red
+				data[i + 1] = medianGreen;   // green
+				data[i + 2] = medianBlue;    // blue
+			}
+		}
+
+	}else{
+		for (let i = first; i < last; i += 4) {
+			if(!(i % n == 0 || i % n == n - 4)){
+				let top = i - n;
+				let bottom = i + n;
+				let left  = i - 4;
+				let right = i + 4;
+				let topLeft = i - n - 4;
+				let topRight = i - n + 4;
+				let bottomLeft  = i + n - 4;
+				let bottomRight = i + n + 4;
+	
+				const averageRed = (
+					data[i] + data[top] + data[bottom] + data[left] + data[right]
+					+	data[topLeft] + data[topRight] + data[bottomLeft] + data[bottomRight]
+					)/9;
+
+				const averageGreen = (
+					data[i + 1] + data[top + 1] + data[bottom + 1] + data[left + 1] + data[right + 1]
+					+	data[topLeft + 1] + data[topRight + 1] + data[bottomLeft + 1] + data[bottomRight + 1]
+					)/9;
+
+				const averageBlue = (
+					data[i + 2] + data[top + 2] + data[bottom + 2] + data[left + 2] + data[right + 2]
+					+	data[topLeft + 2] + data[topRight + 2] + data[bottomLeft + 2] + data[bottomRight + 2]
+					)/9;
+	
+				data[i]     = averageRed;     // red
+				data[i + 1] = averageGreen;   // green
+				data[i + 2] = averageBlue;    // blue
+			}
 		}
 	}
 
