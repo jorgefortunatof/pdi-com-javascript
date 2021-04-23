@@ -1,127 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles.css">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./styles.css" />
 
-    <title>PDI Com JS</title>
-</head>
+		<title>PDI Com JS</title>
+	</head>
 
-<body>
-    <header>
-        <span>RGB:</span> 
-				<div id="rgb-color-picker"></div>
+	<body>
+		<header>
+			<span>RGB:</span>
+			<div id="rgb-color-picker"></div>
 
-				<span id="r">R: <span></span> </span>
-				<span id="g">G: <span></span> </span>
-				<span id="b">B: <span></span> </span>
-    </header>
+			<span id="r">R: <span></span> </span>
+			<span id="g">G: <span></span> </span>
+			<span id="b">B: <span></span> </span>
+		</header>
 
+		<main>
+			<aside>
+				<header>
+					<label for="image1"> Imagem 1: </label>
+					<input id="image1" type="file" accept="image/*" />
 
-    <main>
-        <aside>
-						<header>
-							<label for="image1">
-								Imagem 1:
-							</label>
-							<input id="image1" type="file" accept="image/*"/>
+					<label for="image2"> Imagem 2: </label>
+					<input id="image2" type="file" accept="image/*" />
+				</header>
 
-							<label for="image2">
-								Imagem 2:
-							</label>
-							<input id="image2" type="file" accept="image/*" />
-						</header>
+				<li>
+					<h1>TONS DE CINZA</h1>
+					<div>
+						<label for="r%">R%:</label>
+						<input value="0" id="r%" type="text" />
 
-            <li>
-							<h1>TONS DE CINZA</h1>
-							<div>
-								<label for="r%">R%:</label>
-								<input value="0" id="r%" type="text" />
-								
-								<label for="g%">G%:</label>
-								<input value="0" id="g%" type="text" />
-								
-								<label for="b%">B%:</label>
-								<input value="0" id="b%" type="text" />
+						<label for="g%">G%:</label>
+						<input value="0" id="g%" type="text" />
 
-								<label for="grayscale-type">
-									<input id="grayscale-type" type="checkbox" />
-									Média ponderada
-								</label>
-								
-								<button class="button" id="grayscale">Escala de cinza</button>
-							</div>
-            </li>
+						<label for="b%">B%:</label>
+						<input value="0" id="b%" type="text" />
 
-						<li>
-							<h1>NEGATIVA</h1>
-							<div>
-								<button class="button" id="negative">Negativar</button>
-							</div>
-						</li>
+						<label for="grayscale-type">
+							<input id="grayscale-type" type="checkbox" />
+							Média ponderada
+						</label>
 
-						<li>
-							<h1>LIMIARIZAÇÃO</h1>
-							<div>
-								
-							<label for="thresholding-level">
-								<input id="thresholding-level" type="range" min="0" max="255" step="1" />
-								<span id="thresholding-level-span">0</span>
-							</label>
-								
-								<label for="thresholding-use-grayscale">
-									<input id="thresholding-use-grayscale" type="checkbox" />
-									Escala de cinza
-								</label>
-								<button class="button" id="thresholding">Limiarizar</button>
-							</div>
-						</li>
-
-						<li>
-							<h1>REDUÇÃO DE RUÍDOS</h1>
-							<div>
-
-								<label for="neighbor-x">
-									<input id="neighbor-x" type="radio" name="noise-reduction-type" value="1" />
-									Vizinhos X
-								</label>
-
-								<label for="neighbor-cross">
-									<input id="neighbor-cross" type="radio" name="noise-reduction-type" value="2" />
-									Vizinhos Cruz
-								</label>
-
-								<label for="neighbor-3x3">
-									<input id="neighbor-3x3" type="radio" name="noise-reduction-type" value="3" />
-									Vizinhos 3X3
-								</label>
-
-								<hr />
-
-								<label for="noise-reduction-use-median">
-									<input id="noise-reduction-use-median" type="checkbox" />
-									Mediana
-								</label>
-
-								<button class="button" id="noise-reduction">Remover ruídos</button>
-							</div>
-						</li>
-        </aside>
-    
-        <section>
-					<div class="canvas-box">
-            <canvas id="frame1"></canvas>
+						<button class="button" id="grayscale">Escala de cinza</button>
 					</div>
+				</li>
 
-					<div class="canvas-box">
-						<canvas id="frame3"></canvas>
+				<li>
+					<h1>NEGATIVA</h1>
+					<div>
+						<button class="button" id="negative">Negativar</button>
 					</div>
-						<!-- <canvas id="frame3"></canvas> -->
-        </section>
-    </main>
-    
-    <script src="./script.js"></script>
-</body>
+				</li>
+
+				<li>
+					<h1>LIMIARIZAÇÃO</h1>
+					<div>
+						<label for="thresholding-level">
+							<input
+								id="thresholding-level"
+								type="range"
+								min="0"
+								max="255"
+								step="1"
+							/>
+							<span id="thresholding-level-span">0</span>
+						</label>
+
+						<label for="thresholding-use-grayscale">
+							<input id="thresholding-use-grayscale" type="checkbox" />
+							Escala de cinza
+						</label>
+						<button class="button" id="thresholding">Limiarizar</button>
+					</div>
+				</li>
+
+				<li>
+					<h1>REDUÇÃO DE RUÍDOS</h1>
+					<div>
+						<label for="neighbor-x">
+							<input
+								id="neighbor-x"
+								type="radio"
+								name="noise-reduction-type"
+								value="1"
+							/>
+							Vizinhos X
+						</label>
+
+						<label for="neighbor-cross">
+							<input
+								id="neighbor-cross"
+								type="radio"
+								name="noise-reduction-type"
+								value="2"
+							/>
+							Vizinhos Cruz
+						</label>
+
+						<label for="neighbor-3x3">
+							<input
+								id="neighbor-3x3"
+								type="radio"
+								name="noise-reduction-type"
+								value="3"
+							/>
+							Vizinhos 3X3
+						</label>
+
+						<hr />
+
+						<label for="noise-reduction-use-median">
+							<input id="noise-reduction-use-median" type="checkbox" />
+							Mediana
+						</label>
+
+						<button class="button" id="noise-reduction">Remover ruídos</button>
+					</div>
+				</li>
+			</aside>
+
+			<section>
+				<div class="canvas-box">
+					<canvas id="frame1"></canvas>
+				</div>
+
+				<div class="canvas-box">
+					<canvas id="frame3"></canvas>
+				</div>
+				<!-- <canvas id="frame3"></canvas> -->
+			</section>
+		</main>
+
+		<script src="./script.js"></script>
+	</body>
 </html>
